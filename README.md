@@ -14,7 +14,7 @@ unzip -d k8x12 k8x12_ttf_2021-05-05.zip
 ## Download prebuilt version
 
 ```sh
-wget https://github.com/orangecms/fossasia-badge/releases/download/v1.0.0/badgemagic-tool
+wget https://github.com/orangecms/fossasia-badge/releases/download/v0.0.11/badgemagic-tool
 chmod +x badgemagic-tool # set executable permissions
 ```
 
