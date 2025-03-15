@@ -255,16 +255,16 @@ func main() {
 	flag.Parse()
 	var usbIDVendor, usbIDDevice uint16
 	fmt.Sscanf(*usbIDFlag, "%04x:%04x", &usbIDVendor, &usbIDDevice)
-	di := hid.Enumerate(usbIDVendor, usbIDDevice)
+	di, err := hid.Enumerate(usbIDVendor, usbIDDevice)
 	if len(di) < 1 {
 		log.Fatalf("Could not find any devices")
 	}
-
-	dev, err := di[*deviceIndex].Open()
+	dev := di[*deviceIndex]
+	devOpen, err := di[*deviceIndex].Open()
 	if err != nil {
 		log.Fatalf("Could not open device %#v: %s", di[0], err)
 	}
-	defer dev.Close()
+	defer devOpen.Close()
 	log.Printf("Opened %s / %s @ %s", dev.Manufacturer, dev.Product, dev.Path)
 
 	var p *Packet
@@ -370,5 +370,9 @@ func main() {
 	if l := len(buf); l > 8192 {
 		log.Fatalf("Too long buffer (%d), max is 8192", l)
 	}
-	dev.Write(buf)
+
+	_, err = devOpen.Write(buf)
+	if err != nil {
+		log.Fatalf("Could not write to device %#v: %s", di[0], err)
+	}
 }
