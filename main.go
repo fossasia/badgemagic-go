@@ -256,6 +256,9 @@ func main() {
 	var usbIDVendor, usbIDDevice uint16
 	fmt.Sscanf(*usbIDFlag, "%04x:%04x", &usbIDVendor, &usbIDDevice)
 	di, err := hid.Enumerate(usbIDVendor, usbIDDevice)
+	if err != nil {
+		log.Fatal("Could not enumerate USB device:", err)
+	}
 	if len(di) < 1 {
 		log.Fatalf("Could not find any devices")
 	}
